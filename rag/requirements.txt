@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+groq
+python-dotenv
+pydantic
+llama-index-core
+llama-index-llms-groq
+llama-index-embeddings-huggingface
+sentence-transformers
+pypdf
