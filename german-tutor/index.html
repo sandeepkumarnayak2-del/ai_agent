@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Max AI German Tutor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 700px;
+            height: 90vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: #2d3748;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .chat-header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .chat-header p {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            max-width: 85%;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .message.bot .message-avatar {
+            background: #2d3748;
+        }
+
+        .message.user .message-avatar {
+            background: #4299e1;
+        }
+
+        .message-text {
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .message.bot .message-text {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            color: #2d3748;
+            border-top-left-radius: 4px;
+        }
+
+        .message.user .message-text {
+            background: #4299e1;
+            color: white;
+            border-top-right-radius: 4px;
+        }
+
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            max-width: 85%;
+        }
+
+        .typing-dots {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            padding: 12px 16px;
+            border-radius: 18px;
+            border-top-left-radius: 4px;
+        }
+
+        .typing-dots span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #a0aec0;
+            margin: 0 2px;
+            animation: bounce 1.2s infinite;
+        }
+
+        .typing-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            60%,
+            100% {
+                transform: translateY(0);
+            }
+
+            30% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .chat-input {
+            padding: 20px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 25px;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .chat-input input:focus {
+            border-color: #4299e1;
+        }
+
+        .chat-input button {
+            padding: 12px 24px;
+            background: #2d3748;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .chat-input button:hover {
+            background: #4299e1;
+        }
+
+        .chat-input button:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+        }
+
+        .stats {
+            padding: 8px 20px;
+            background: #f7fafc;
+            border-top: 1px solid #e2e8f0;
+            font-size: 12px;
+            color: #718096;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="chat-container">
+        <!-- Header -->
+        <div class="chat-header">
+            <h1>🇩🇪 Max AI German Tutor</h1>
+            <p>Your personal AI German language coach</p>
+            <p>Built by Sandeep Kumar Nayak 👨‍💻</p>
+        </div>
+
+        <!-- Messages -->
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot">
+                <div class="message-avatar">🤖</div>
+                <div class="message-text">
+                    Hallo! I am Max, your personal German tutor! 🇩🇪
+                    I am here to help you learn German in a fun way.
+                    What would you like to learn today?
+                </div>
+            </div>
+        </div>
+
+        <!-- Typing indicator -->
+        <div class="typing-indicator" id="typingIndicator">
+            <div class="message-avatar"
+                style="background:#2d3748; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center;">
+                🤖</div>
+            <div class="typing-dots">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats" id="stats">
+            Messages: 0 | Learning streak: Day 10 🔥
+        </div>
+
+        <!-- Input -->
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="Ask Max anything in German or English..."
+                onkeypress="handleKeyPress(event)" />
+            <button onclick="sendMessage()" id="sendButton">Send 📤</button>
+        </div>
+    </div>
+
+    <script>
+        // Conversation history
+        let history = [];
+        let messageCount = 0;
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function addMessage(text, isUser) {
+            const messagesDiv = document.getElementById('chatMessages');
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = isUser ? '🧑' : '🤖';
+
+            const textDiv = document.createElement('div');
+            textDiv.className = 'message-text';
+            textDiv.textContent = text;
+
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(textDiv);
+            messagesDiv.appendChild(messageDiv);
+
+            // Scroll to bottom
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            // Update stats
+            messageCount++;
+            document.getElementById('stats').textContent =
+                `Messages: ${messageCount} | Learning streak: Day 10 🔥`;
+        }
+
+        function showTyping(show) {
+            const indicator = document.getElementById('typingIndicator');
+            indicator.style.display = show ? 'flex' : 'none';
+
+            if (show) {
+                const messagesDiv = document.getElementById('chatMessages');
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const button = document.getElementById('sendButton');
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            // Clear input
+            input.value = '';
+            button.disabled = true;
+
+            // Add user message
+            addMessage(message, true);
+
+            // Add to history
+            history.push({
+                role: 'user',
+                content: message
+            });
+
+            // Show typing
+            showTyping(true);
+
+            try {
+                // Call your FastAPI server
+                const response = await fetch('https://max-ai-tutor.onrender.com/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        history: history.slice(-10) // Last 10 messages
+                    })
+                });
+
+                const data = await response.json();
+
+                // Hide typing
+                showTyping(false);
+
+                // Add Max's response
+                addMessage(data.reply, false);
+
+                // Add to history
+                history.push({
+                    role: 'assistant',
+                    content: data.reply
+                });
+
+            } catch (error) {
+                showTyping(false);
+                addMessage('Sorry, could not connect to server. Is it running?', false);
+            }
+
+            button.disabled = false;
+            input.focus();
+        }
+    </script>
+</body>
+
+</html>
