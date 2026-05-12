@@ -1,0 +1,52 @@
+Name: Sandeep Kumar Nayak
+Location: Germany 🇩🇪
+Role: AI Developer
+
+SKILLS:
+- Python programming
+- FastAPI web framework
+- AI agent development
+- RAG applications
+- LangChain framework
+- Groq AI API
+- HTML CSS JavaScript
+- Git and GitHub
+- Vector databases (Chroma)
+- LlamaIndex
+
+PROJECTS BUILT:
+1. Max AI German Tutor
+   - AI powered German language tutor
+   - Built with Python FastAPI Groq AI
+   - Live at max-ai-tutor.onrender.com
+
+2. DocChat AI
+   - Chat with any PDF document
+   - Built with LlamaIndex RAG FastAPI
+   - Live at doc-chat-ai.onrender.com
+
+3. AI Agent with Tools
+   - Terminal based agent
+   - Tools: time calculator German translator
+   - Built from scratch in Python
+
+4. LangChain RAG Agent
+   - Conversational agent with memory
+   - Uses Chroma vector database
+   - Built with LangChain framework
+
+EXPERIENCE:
+- Software developer background
+- Learning AI development intensively
+- Building production ready applications
+- 18 days of consistent daily practice
+
+GOALS:
+- Become professional AI engineer in Germany
+- Build more complex AI applications
+- Get hired as AI developer
+- Contribute to real AI products
+
+CONTACT:
+- GitHub: github.com/sandeepkumarnayak2-del
+- Location: Germany
