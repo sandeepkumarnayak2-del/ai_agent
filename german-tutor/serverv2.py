@@ -14,6 +14,8 @@ import logging
 import os
 from contextlib import asynccontextmanager
 import time
+from security import sanitize_input, validate_username
+from new_db import init_db, save_message, get_history, get_words
 
 load_dotenv()
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
@@ -40,11 +42,12 @@ limiter = Limiter(key_func=get_remote_address)
 async def lifespan(app: FastAPI):
     # STARTUP
     logger.info("🚀 Max AI server started!")
+    init_db()  # ← ADD THIS
+    logger.info("💾 Database initialized!")
     yield
     # SHUTDOWN
     logger.info("🛑 Server shutting down")
-
-
+    
 app = FastAPI(
     title="Max AI German Tutor",
     description="AI powered German tutor by Sandeep Kumar Nayak",
@@ -103,6 +106,7 @@ def status():
 @app.post("/chat", response_model=ChatResponse)
 @limiter.limit("10/minute")
 async def chat(request: Request, chat_request: ChatRequest):
+    
     try:
         # Validate input
         if not chat_request.message.strip():
@@ -115,6 +119,14 @@ async def chat(request: Request, chat_request: ChatRequest):
                 reply="Message too long! Max 1000 characters.",
                 status="error"
             )
+        # Validate username
+        if not validate_username(chat_request.username):
+            chat_request.username = "Guest"
+
+        # Sanitize input
+        clean_message = sanitize_input(chat_request.message)
+        logger.info(f"👤 {chat_request.username}: {clean_message[:50]}")
+
         logger.info(f" {chat_request.username}: {chat_request.message[:50]}")
 
         # Build conversation for max
@@ -136,7 +148,7 @@ async def chat(request: Request, chat_request: ChatRequest):
             # Add new message
         messages.append({
             "role": "user",
-            "content": chat_request.message
+            "content": clean_message
         })
 
         response = client.chat.completions.create(
