@@ -923,7 +923,7 @@
             document.getElementById('messages').scrollTop = 99999;
 
             try {
-                const res = await fetch('/chat', {
+                const res = await fetch('https://ai-agent-maxv2.onrender.com/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
