@@ -47,7 +47,7 @@ async def lifespan(app: FastAPI):
     yield
     # SHUTDOWN
     logger.info("🛑 Server shutting down")
-    
+
 app = FastAPI(
     title="Max AI German Tutor",
     description="AI powered German tutor by Sandeep Kumar Nayak",
@@ -158,6 +158,10 @@ async def chat(request: Request, chat_request: ChatRequest):
         )
         reply = response.choices[0].message.content
         logger.info(f"🤖 Max replied to {chat_request.username}")
+        # SAVE TO DATABASE ← ADD THESE
+        save_message(chat_request.username, "user", clean_message)
+        save_message(chat_request.username, "assistant", reply)
+        logger.info(f"💾 Messages saved to database!")
 
         return ChatResponse(reply=reply, status="ok")
     
@@ -177,3 +181,61 @@ async def chat(request: Request, chat_request: ChatRequest):
 
 
 
+@app.get("/history/{username}")
+def get_chat_history(username: str):
+    try:
+        history = get_history(username, limit=50)
+        return {
+            "username": username,
+            "messages": [
+                {
+                    "role": msg.role,
+                    "content": msg.content,
+                    "timestamp": str(msg.timestamp)
+                }
+                for msg in history
+            ],
+            "total": len(history)
+        }
+    except Exception as e:
+        return {"error": str(e)}
+
+@app.get("/words/{username}")
+def get_word_bank(username: str):
+    try:
+        words = get_words(username)
+        return {
+            "username": username,
+            "words": words,
+            "count": len(words)
+        }
+    except Exception as e:
+        return {"error": str(e)}
+
+@app.get("/stats/{username}")
+def get_stats(username: str):
+    try:
+        history = get_history(username, limit=1000)
+        words = get_words(username)
+        return {
+            "username": username,
+            "total_messages": len(history),
+            "words_learned": len(words),
+            "word_list": words
+        }
+    except Exception as e:
+        return {"error": str(e)}
+
+@app.delete("/history/{username}")
+def clear_history(username: str):
+    try:
+        from new_db import SessionLocal, Conversation
+        db = SessionLocal()
+        db.query(Conversation)\
+            .filter(Conversation.username == username)\
+            .delete()
+        db.commit()
+        db.close()
+        return {"message": f"History cleared for {username}"}
+    except Exception as e:
+        return {"error": str(e)}
