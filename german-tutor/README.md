@@ -51,5 +51,3 @@ uvicorn server:app --reload
 # Open browser
 http://localhost:8000  -> https://ai-agent-maxv2.onrender.com/
 ```
-
-## 📁 Project Structure
