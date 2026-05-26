@@ -1,33 +1,3 @@
-# AI-LEARNING
-# 🇩🇪 Max AI — German Tutor Agent
-
-A personal German language tutor powered by AI.
-Built in Week 1 of my AI learning journey.
-
-## Features
-- 🤖 AI-powered German tutor with personality
-- 🧠 Remembers your progress between sessions
-- 📚 Personal word bank
-- 🔧 AI agent with tools (time, calculator, notes)
-- 🎮 German quiz game
-
-## Tech Stack
-- Python
-- Groq API (LLaMA 3)
-- JSON for persistence
-
-## How to Run
-```bash
-pip install groq
-python3 max_agent.py
-```
-
-## My Journey
-Built this in 7 days as a complete beginner.
-Learning AI development one day at a time! 💪
-
-
-
 # 🇩🇪 Max AI — German Language Tutor
 
 > An AI-powered German language tutor built with Python and FastAPI.
@@ -66,7 +36,7 @@ Learning AI development one day at a time! 💪
 
 ```bash
 # Clone repo
-git clone https://github.com/sandeepkumarnayak2-del/max-ai-tutor
+git clone https://github.com/sandeepkumarnayak2-del/ai_agent/max-ai-tutor
 
 # Install dependencies
 pip install -r requirements.txt
@@ -79,7 +49,7 @@ cp .env.example .env
 uvicorn server:app --reload
 
 # Open browser
-http://localhost:8000
+http://localhost:8000  -> https://ai-agent-maxv2.onrender.com/
 ```
 
 ## 📁 Project Structure
