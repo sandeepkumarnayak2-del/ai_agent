@@ -36,7 +36,7 @@
 
 ```bash
 # Clone repo
-git clone https://github.com/sandeepkumarnayak2-del/ai_agent/max-ai-tutor
+git clone https://github.com/sandeepkumarnayak2-del/ai_agent/german-tutor
 
 # Install dependencies
 pip install -r requirements.txt
