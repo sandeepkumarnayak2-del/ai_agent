@@ -2,6 +2,7 @@
 
 > An AI-powered German language tutor built with Python and FastAPI.
 > **Live Demo:** https://max-ai-tutor.onrender.com
+> https://max-ai-tutor-1.onrender.com
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue?style=flat&logo=python)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.111-green?style=flat&logo=fastapi)
