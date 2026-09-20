@@ -152,7 +152,7 @@ async def chat(request: Request, chat_request: ChatRequest):
         })
 
         response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+             model="openai/gpt-oss-120b",
             messages=messages,
             max_tokens=1000
         )
