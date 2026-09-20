@@ -20,6 +20,10 @@ import json
 
 load_dotenv()
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+# LangSmith tracing - add these!
+os.environ["LANGCHAIN_TRACING_V2"] = "true"
+os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
+os.environ["LANGCHAIN_PROJECT"] = "german-tutor"
 
 os.makedirs("logs", exist_ok=True)
 
@@ -155,7 +159,7 @@ async def chat(request: Request, chat_request: ChatRequest):
         save_message(chat_request.username, "user", clean_message)
 
         response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model="openai/gpt-oss-120b",
             messages=messages,
             max_tokens=1000
         )
@@ -164,7 +168,7 @@ async def chat(request: Request, chat_request: ChatRequest):
         def generate():
             full_response=""
             stream=client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
+                model="openai/gpt-oss-120b",
                 messages=messages,
                 stream=True,
                 max_tokens=1000
